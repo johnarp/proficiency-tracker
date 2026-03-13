@@ -11,10 +11,10 @@
     <label>
         Sort:
         <select id="ctrl-sort">
-            <option value="name-asc">Name (A-Z)</option>
-            <option value="name-desc">Name (Z-A)</option>
-            <option value="rank-desc">Rank (High-Low)</option>
-            <option value="rank-asc">Rank (Low-High)</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="rank-desc">Rank High–Low</option>
+            <option value="rank-asc">Rank Low–High</option>
         </select>
     </label>
 </div>
@@ -30,6 +30,12 @@
             Rank:
             <select id="modal-rank-select">
                 <!-- Populated from ranks.json by heroes.js -->
+            </select>
+        </label>
+        <label>
+            Level:
+            <select id="modal-level-select">
+                <!-- Populated when rank is selected -->
             </select>
         </label>
     </div>

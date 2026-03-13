@@ -1,19 +1,12 @@
 /* styles.css */
 
-/* ── Variables ────────────────────────────────────────────────── */
-
 :root {
-    --nav-bg:      #111115;
-    --content-bg:  #9aa3b8;
-    --card-bg:     #1c1e26;
-    --accent:      #e8b020;
-    --text:        #ffffff;
-    --text-dim:    #8a8ea8;
-    --border:      #2a2c38;
-    --modal-bg:    #181a22;
+    --bg:      #D2D3DD;
+    --text:    #ffffff;
+    --primary: #FFFF00;
+    --card-bg: #F7F7F9;
+    --nav-bg:  #282A31;
 }
-
-/* ── Base ─────────────────────────────────────────────────────── */
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -23,7 +16,7 @@
 
 body {
     font-family: 'Onest', sans-serif;
-    background: var(--content-bg);
+    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -78,9 +71,10 @@ nav ul a {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--text-dim);
+    color: var(--text);
+    opacity: 0.5;
     position: relative;
-    transition: color 0.15s;
+    transition: opacity 0.15s;
     cursor: pointer;
 }
 
@@ -91,17 +85,16 @@ nav ul a::after {
     left: 0;
     right: 0;
     height: 2px;
-    background: var(--accent);
+    background: var(--primary);
     transform: scaleX(0);
     transition: transform 0.15s;
 }
 
-nav ul a:hover {
-    color: var(--text);
-}
+nav ul a:hover { opacity: 1; }
 
 nav ul a.active {
-    color: var(--accent);
+    opacity: 1;
+    color: var(--primary);
 }
 
 nav ul a.active::after {
@@ -116,10 +109,8 @@ nav ul a.active::after {
     height: 36px;
     margin-bottom: 20px;
     background: var(--nav-bg);
-    /* Both sides angle upward — wider at top, narrower at bottom */
     clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
     padding: 0 32px;
-    gap: 0;
 }
 
 #hero-controls label {
@@ -131,12 +122,14 @@ nav ul a.active::after {
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--text);
+    opacity: 0.6;
     height: 100%;
 }
 
 #hero-controls label + label {
-    border-left: 1px solid var(--border);
+    border-left: 1px solid var(--text);
+    opacity: 0.6;
 }
 
 #hero-controls select {
@@ -162,8 +155,8 @@ nav ul a.active::after {
 #heroes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    column-gap: 10px;
-    row-gap: 0;
+    column-gap: 12px;
+    row-gap: 8px;
 }
 
 .hero-card {
@@ -173,12 +166,10 @@ nav ul a.active::after {
     clip-path: polygon(0% 16px, 100% 0%, 100% calc(100% - 16px), 0% 100%);
     overflow: hidden;
     transition: filter 0.15s;
-    margin-top: -5px;
+    margin-top: -10px;
 }
 
-.hero-card:hover {
-    filter: brightness(1.15);
-}
+.hero-card:hover { filter: brightness(1.1); }
 
 .hero-card img {
     width: 100%;
@@ -188,32 +179,39 @@ nav ul a.active::after {
     object-position: top;
 }
 
-/* ── Rank Modal ───────────────────────────────────────────────── */
+/* ── Modal ────────────────────────────────────────────────────── */
 
 #hero-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 100;
 }
 
+/* Dim the page behind the modal without tinting the inner panel */
+#hero-modal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--nav-bg);
+    opacity: 0.75;
+}
+
 #hero-modal-inner {
-    background: var(--modal-bg);
-    border: 1px solid var(--border);
-    /* Clipped top-right corner, sharp angular feel */
-    clip-path: polygon(0% 0%, calc(100% - 20px) 0%, 100% 20px, 100% 100%, 0% 100%);
+    position: relative;
+    background: var(--nav-bg);
     padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
     min-width: 280px;
 }
 
 #modal-hero-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -223,18 +221,21 @@ nav ul a.active::after {
 #hero-modal-inner label {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--text);
+    opacity: 0.6;
 }
 
-#modal-rank-select {
-    background: #0e0f14;
-    border: 1px solid var(--border);
-    color: var(--text);
+#modal-rank-select,
+#modal-level-select {
+    background: var(--bg);
+    border: none;
+    border-radius: 0;
+    color: var(--nav-bg);
     font-family: 'Onest', sans-serif;
     font-size: 0.88rem;
     font-weight: 500;
@@ -244,15 +245,18 @@ nav ul a.active::after {
     width: 100%;
 }
 
-#modal-rank-select option {
-    background: var(--modal-bg);
+#modal-rank-select option,
+#modal-level-select option {
+    background: var(--bg);
+    color: var(--nav-bg);
 }
 
 #modal-close {
     align-self: flex-start;
     background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
+    border: 1px solid var(--text);
+    border-radius: 0;
+    color: var(--text);
     font-family: 'Onest', sans-serif;
     font-size: 0.7rem;
     font-weight: 600;
@@ -260,12 +264,101 @@ nav ul a.active::after {
     text-transform: uppercase;
     padding: 6px 16px;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    opacity: 0.5;
+    transition: opacity 0.15s, color 0.15s, border-color 0.15s;
 }
 
 #modal-close:hover {
-    color: var(--accent);
-    border-color: var(--accent);
+    opacity: 1;
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* ── Customize View ───────────────────────────────────────────── */
+
+#customize-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--nav-bg);
+    padding: 16px 20px;
+}
+
+.setting-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-label span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.setting-label small {
+    font-size: 0.7rem;
+    color: var(--text);
+    opacity: 0.5;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+/* Sharp toggle switch */
+.toggle {
+    position: relative;
+    width: 44px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    opacity: 0.3;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+}
+
+.toggle input:checked + .toggle-track {
+    background: var(--primary);
+    opacity: 1;
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 16px;
+    height: 16px;
+    background: var(--text);
+    pointer-events: none;
+    transition: transform 0.15s;
+    clip-path: polygon(2px 0%, 100% 0%, calc(100% - 2px) 100%, 0% 100%);
+}
+
+.toggle input:checked ~ .toggle-thumb {
+    transform: translateX(20px);
+    background: var(--nav-bg);
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
@@ -274,7 +367,7 @@ footer {
     background: var(--nav-bg);
     padding: 14px 24px;
     font-size: 0.68rem;
-    color: var(--text-dim);
+    color: var(--text);
+    opacity: 0.4;
     text-align: center;
-    letter-spacing: 0.03em;
 }

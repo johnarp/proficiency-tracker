@@ -1,12 +1,14 @@
 // heroes.js
-// Logic for the heroes view: data fetching, filtering, sorting, rank selection.
+// Logic for the heroes view: data fetching, filtering, sorting, rank/level selection.
 // All HTML structure lives in views/heroes.html.
 // Called by views.js via initHeroesView().
 
 // In-memory state — no localStorage yet
 const heroState = {
     heroes:    [],   // full list from heroes.json
-    heroRanks: {},   // { "Hero Name": rankValue } — persists across view reloads in-session
+    ranks:     [],   // full list from ranks.json, sorted by rank value
+    // { "Hero Name": { rank: 0, level: 1 } } — level is the actual level number (1-54)
+    heroRanks: {},
     filter: { role: 'all' },
     sort:   { by: 'name', dir: 'asc' },
 };
@@ -20,8 +22,9 @@ async function initHeroesView() {
     ]);
 
     heroState.heroes = heroes;
+    heroState.ranks  = [...ranks].sort((a, b) => a.rank - b.rank);
 
-    populateRankOptions(ranks);
+    populateRankOptions();
     bindControls();
     bindModal();
     renderGrid();
@@ -31,12 +34,12 @@ window.initHeroesView = initHeroesView;
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
-/** Populate the rank <select> in the modal from ranks.json data. */
-function populateRankOptions(ranks) {
+/** Populate the rank <select> from heroState.ranks. */
+function populateRankOptions() {
     const select = document.getElementById('modal-rank-select');
-    const sorted = [...ranks].sort((a, b) => a.rank - b.rank);
+    select.innerHTML = '';
 
-    sorted.forEach(r => {
+    heroState.ranks.forEach(r => {
         const option = document.createElement('option');
         option.value = r.rank;
         option.textContent = r.title;
@@ -44,12 +47,27 @@ function populateRankOptions(ranks) {
     });
 }
 
+/**
+ * Populate the level <select> with levels for the given rank index.
+ */
+function populateLevelOptions(rankIndex) {
+    const select   = document.getElementById('modal-level-select');
+    const rankData = heroState.ranks.find(r => r.rank === rankIndex);
+    select.innerHTML = '';
+
+    for (let lvl = rankData.minLevel; lvl <= rankData.maxLevel; lvl++) {
+        const option = document.createElement('option');
+        option.value = lvl;
+        option.textContent = `Level ${lvl}`;
+        select.appendChild(option);
+    }
+}
+
 /** Wire up the controls bar, restoring current state. */
 function bindControls() {
     const roleSelect = document.getElementById('ctrl-role');
     const sortSelect = document.getElementById('ctrl-sort');
 
-    // Restore state (in case user navigated away and back)
     roleSelect.value = heroState.filter.role;
     sortSelect.value = `${heroState.sort.by}-${heroState.sort.dir}`;
 
@@ -65,7 +83,7 @@ function bindControls() {
     });
 }
 
-/** Wire up the modal close button and backdrop click. */
+/** Wire up modal close button and backdrop click. */
 function bindModal() {
     const modal = document.getElementById('hero-modal');
     document.getElementById('modal-close').addEventListener('click', closeModal);
@@ -87,6 +105,14 @@ function renderGrid() {
         img.loading = 'lazy';
 
         card.className = 'hero-card';
+
+        // Apply rank color if the setting is enabled
+        if (appSettings.rankColors) {
+            const savedRank = heroState.heroRanks[hero.name]?.rank ?? 0;
+            const rankData  = heroState.ranks.find(r => r.rank === savedRank);
+            if (rankData?.color) card.style.background = rankData.color;
+        }
+
         card.appendChild(img);
         card.addEventListener('click', () => openModal(hero));
         grid.appendChild(card);
@@ -109,10 +135,10 @@ function getVisibleHeroes() {
             return heroState.sort.dir === 'asc' ? cmp : -cmp;
         }
         if (heroState.sort.by === 'rank') {
-            // Unranked heroes default to 0 (Agent) for sorting
-            const ra = heroState.heroRanks[a.name] ?? 0;
-            const rb = heroState.heroRanks[b.name] ?? 0;
-            return heroState.sort.dir === 'asc' ? ra - rb : rb - ra;
+            // Sort by actual level number — heroes default to level 1 (Agent) if unset
+            const la = heroState.heroRanks[a.name]?.level ?? 1;
+            const lb = heroState.heroRanks[b.name]?.level ?? 1;
+            return heroState.sort.dir === 'asc' ? la - lb : lb - la;
         }
         return 0;
     });
@@ -123,27 +149,47 @@ function getVisibleHeroes() {
 // ─── Modal ────────────────────────────────────────────────────────────────────
 
 function openModal(hero) {
-    const modal  = document.getElementById('hero-modal');
-    const select = document.getElementById('modal-rank-select');
-    const saved  = heroState.heroRanks[hero.name];
+    const modal       = document.getElementById('hero-modal');
+    const rankSelect  = document.getElementById('modal-rank-select');
+    const levelSelect = document.getElementById('modal-level-select');
+    const saved       = heroState.heroRanks[hero.name];
 
     document.getElementById('modal-hero-name').textContent = hero.name;
-    select.value = saved !== undefined ? saved : 0;
 
-    select.onchange = () => {
-        if (select.value === '') {
-            delete heroState.heroRanks[hero.name];
-        } else {
-            heroState.heroRanks[hero.name] = parseInt(select.value, 10);
-        }
+    // Restore saved rank and level, or default to Agent level 1
+    const savedRank  = saved?.rank  ?? 0;
+    const savedLevel = saved?.level ?? 1;
+
+    rankSelect.value = savedRank;
+    populateLevelOptions(savedRank);
+    levelSelect.value = savedLevel;
+
+    // When rank changes: repopulate levels and default to that rank's first level
+    rankSelect.onchange = () => {
+        const rankIndex = parseInt(rankSelect.value, 10);
+        populateLevelOptions(rankIndex);
+        const rankData = heroState.ranks.find(r => r.rank === rankIndex);
+        levelSelect.value = rankData.minLevel;
+        saveHeroRank(hero.name, rankIndex, rankData.minLevel);
+    };
+
+    // When level changes: just save
+    levelSelect.onchange = () => {
+        const rankIndex = parseInt(rankSelect.value, 10);
+        const level     = parseInt(levelSelect.value, 10);
+        saveHeroRank(hero.name, rankIndex, level);
     };
 
     modal.style.display = 'flex';
 }
 
+function saveHeroRank(heroName, rankIndex, level) {
+    heroState.heroRanks[heroName] = { rank: rankIndex, level };
+}
+
 function closeModal() {
     document.getElementById('hero-modal').style.display = 'none';
-    renderGrid(); // Refresh so rank-based sorting reflects changes
+    renderGrid();
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

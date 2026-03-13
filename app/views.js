@@ -5,12 +5,13 @@ const DEFAULT_VIEW = 'views/heroes.html';
 
 // Maps each view to its init function name (defined in the view's script)
 const VIEW_INIT = {
-    'views/heroes.html': 'initHeroesView',
+    'views/heroes.html':    'initHeroesView',
+    'views/customize.html': 'initCustomizeView',
 };
 
-// Maps each view to its script path
 const VIEW_SCRIPTS = {
-    'views/heroes.html': './app/heroes.js',
+    'views/heroes.html':    './app/heroes.js',
+    'views/customize.html': './app/customize.js',
 };
 
 // Track already-loaded scripts to avoid duplicate injection

@@ -4,6 +4,8 @@
 
 **Track your Marvel Rivals Hero Proficiency.**
 
+![Preview](./assets/readme_preview.png)
+
 </div>
 
 ## Usage
@@ -25,7 +27,7 @@ Then open [http://localhost:3000](http://localhost:3000)
 ## To Do
 
 - [ ] Save/Import/Export with JSON & localStorage
-- [ ] Levels (alongside Ranks)
+- [x] Levels (alongside Ranks)
 - [ ] Ranks shown visually on cards
 - [ ] Customization
 - [ ] Improved visuals and UI

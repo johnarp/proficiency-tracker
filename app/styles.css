@@ -1,12 +1,22 @@
 /* styles.css */
 
+/* ── Themes ───────────────────────────────────────────────────── */
+
 :root {
     --bg:      #D2D3DD;
+    --card-bg: #B8BAC8;
+    --nav-bg:  #282A31;
     --text:    #ffffff;
     --primary: #FFFF00;
-    --card-bg: #F7F7F9;
+}
+
+[data-theme="dark"] {
+    --bg:      #282A31;
+    --card-bg: #1E2026;
     --nav-bg:  #282A31;
 }
+
+/* ── Base ─────────────────────────────────────────────────────── */
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -37,10 +47,14 @@ header {
 nav {
     display: flex;
     align-items: center;
-    gap: 32px;
-    padding: 0 24px;
+    gap: 24px;
+    padding: 0 16px;
     height: 52px;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
+
+nav::-webkit-scrollbar { display: none; }
 
 nav h1 {
     font-size: 0.95rem;
@@ -49,6 +63,7 @@ nav h1 {
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--text);
+    flex-shrink: 0;
 }
 
 nav ul {
@@ -56,6 +71,7 @@ nav ul {
     list-style: none;
     height: 100%;
     align-items: stretch;
+    flex-shrink: 0;
 }
 
 nav ul li {
@@ -65,7 +81,7 @@ nav ul li {
 nav ul a {
     display: flex;
     align-items: center;
-    padding: 0 18px;
+    padding: 0 14px;
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -76,6 +92,7 @@ nav ul a {
     position: relative;
     transition: opacity 0.15s;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 nav ul a::after {
@@ -111,7 +128,12 @@ nav ul a.active::after {
     background: var(--nav-bg);
     clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
     padding: 0 32px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
+
+#hero-controls::-webkit-scrollbar { display: none; }
 
 #hero-controls label {
     display: flex;
@@ -125,6 +147,8 @@ nav ul a.active::after {
     color: var(--text);
     opacity: 0.6;
     height: 100%;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 #hero-controls label + label {
@@ -154,7 +178,7 @@ nav ul a.active::after {
 
 #heroes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     column-gap: 12px;
     row-gap: 8px;
 }
@@ -189,9 +213,9 @@ nav ul a.active::after {
     align-items: center;
     justify-content: center;
     z-index: 100;
+    padding: 16px;
 }
 
-/* Dim the page behind the modal without tinting the inner panel */
 #hero-modal::before {
     content: '';
     position: absolute;
@@ -207,7 +231,8 @@ nav ul a.active::after {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-width: 280px;
+    width: 100%;
+    max-width: 320px;
 }
 
 #modal-hero-name {
@@ -289,8 +314,9 @@ nav ul a.active::after {
     justify-content: space-between;
     gap: 24px;
     background: var(--nav-bg);
-    padding: 16px 20px;
+    padding: 14px 20px;
 }
+
 
 .setting-label {
     display: flex;
@@ -314,7 +340,7 @@ nav ul a.active::after {
     letter-spacing: 0;
 }
 
-/* Sharp toggle switch */
+/* Sharp toggle — same parallelogram direction as the control bar */
 .toggle {
     position: relative;
     width: 44px;
@@ -332,11 +358,11 @@ nav ul a.active::after {
 .toggle-track {
     position: absolute;
     inset: 0;
-    background: var(--bg);
+    background: var(--text);
     opacity: 0.3;
     cursor: pointer;
     transition: background 0.15s, opacity 0.15s;
-    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
 }
 
 .toggle input:checked + .toggle-track {
@@ -347,18 +373,70 @@ nav ul a.active::after {
 .toggle-thumb {
     position: absolute;
     top: 3px;
-    left: 4px;
-    width: 16px;
+    left: 5px;
+    width: 14px;
     height: 16px;
     background: var(--text);
     pointer-events: none;
     transition: transform 0.15s;
-    clip-path: polygon(2px 0%, 100% 0%, calc(100% - 2px) 100%, 0% 100%);
+    clip-path: polygon(3px 0%, 100% 0%, calc(100% - 3px) 100%, 0% 100%);
 }
 
 .toggle input:checked ~ .toggle-thumb {
-    transform: translateX(20px);
+    transform: translateX(18px);
     background: var(--nav-bg);
+}
+
+/* ── Settings sections ────────────────────────────────────────── */
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.settings-section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--nav-bg);
+    opacity: 0.6;
+    padding: 0 4px 8px;
+}
+
+[data-theme="dark"] .settings-section-title {
+    color: var(--text);
+}
+
+/* Theme picker button group */
+#theme-picker {
+    display: flex;
+    gap: 2px;
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--text);
+    font-family: 'Onest', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    cursor: pointer;
+    opacity: 0.4;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: opacity 0.15s;
+}
+
+.theme-btn:hover { opacity: 0.75; }
+
+.theme-btn.active {
+    opacity: 1;
+    color: var(--primary);
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
@@ -370,4 +448,21 @@ footer {
     color: var(--text);
     opacity: 0.4;
     text-align: center;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    main {
+        padding: 16px;
+    }
+
+    #heroes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        column-gap: 8px;
+    }
+
+    #hero-modal-inner {
+        padding: 24px 20px;
+    }
 }

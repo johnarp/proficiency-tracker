@@ -1,15 +1,27 @@
 <div id="customize-settings">
 
-    <div class="setting-row">
-        <div class="setting-label">
-            <span>Rank Colors</span>
-            <small>Hero card background reflects their current rank</small>
+    <div class="settings-section">
+        <h2 class="settings-section-title">Theme</h2>
+        <div class="setting-row">
+            <div id="theme-picker">
+                <!-- Populated by customize.js from appSettings.themes -->
+            </div>
         </div>
-        <label class="toggle">
-            <input type="checkbox" id="setting-rank-colors">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-        </label>
+    </div>
+
+    <div class="settings-section">
+        <h2 class="settings-section-title">Heroes</h2>
+        <div class="setting-row">
+            <div class="setting-label">
+                <span>Rank Colors</span>
+                <small>Hero card background reflects their current rank</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="setting-rank-colors">
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+            </label>
+        </div>
     </div>
 
 </div>

@@ -1,0 +1,36 @@
+<div id="hero-controls">
+    <label>
+        Role:
+        <select id="ctrl-role">
+            <option value="all">All</option>
+            <option value="Vanguard">Vanguard</option>
+            <option value="Duelist">Duelist</option>
+            <option value="Strategist">Strategist</option>
+        </select>
+    </label>
+    <label>
+        Sort:
+        <select id="ctrl-sort">
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="rank-desc">Rank (High-Low)</option>
+            <option value="rank-asc">Rank (Low-High)</option>
+        </select>
+    </label>
+</div>
+
+<div id="heroes-grid"></div>
+
+<!-- Rank modal -->
+<div id="hero-modal" style="display:none">
+    <div id="hero-modal-inner">
+        <button id="modal-close">Close</button>
+        <h3 id="modal-hero-name"></h3>
+        <label>
+            Rank:
+            <select id="modal-rank-select">
+                <!-- Populated from ranks.json by heroes.js -->
+            </select>
+        </label>
+    </div>
+</div>

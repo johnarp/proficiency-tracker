@@ -1,0 +1,280 @@
+/* styles.css */
+
+/* ── Variables ────────────────────────────────────────────────── */
+
+:root {
+    --nav-bg:      #111115;
+    --content-bg:  #9aa3b8;
+    --card-bg:     #1c1e26;
+    --accent:      #e8b020;
+    --text:        #ffffff;
+    --text-dim:    #8a8ea8;
+    --border:      #2a2c38;
+    --modal-bg:    #181a22;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Onest', sans-serif;
+    background: var(--content-bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    padding: 24px;
+}
+
+/* ── Nav ──────────────────────────────────────────────────────── */
+
+header {
+    background: var(--nav-bg);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 0 24px;
+    height: 52px;
+}
+
+nav h1 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    height: 100%;
+    align-items: stretch;
+}
+
+nav ul li {
+    display: flex;
+}
+
+nav ul a {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-dim);
+    position: relative;
+    transition: color 0.15s;
+    cursor: pointer;
+}
+
+nav ul a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.15s;
+}
+
+nav ul a:hover {
+    color: var(--text);
+}
+
+nav ul a.active {
+    color: var(--accent);
+}
+
+nav ul a.active::after {
+    transform: scaleX(1);
+}
+
+/* ── Control Bar ──────────────────────────────────────────────── */
+
+#hero-controls {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    margin-bottom: 20px;
+    background: var(--nav-bg);
+    /* Both sides angle upward — wider at top, narrower at bottom */
+    clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+    padding: 0 32px;
+    gap: 0;
+}
+
+#hero-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    height: 100%;
+}
+
+#hero-controls label + label {
+    border-left: 1px solid var(--border);
+}
+
+#hero-controls select {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: 'Onest', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+}
+
+#hero-controls select option {
+    background: var(--nav-bg);
+    text-transform: none;
+}
+
+/* ── Hero Grid ────────────────────────────────────────────────── */
+
+#heroes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    column-gap: 10px;
+    row-gap: 0;
+}
+
+.hero-card {
+    cursor: pointer;
+    background: var(--card-bg);
+    aspect-ratio: 1 / 2;
+    clip-path: polygon(0% 16px, 100% 0%, 100% calc(100% - 16px), 0% 100%);
+    overflow: hidden;
+    transition: filter 0.15s;
+    margin-top: -5px;
+}
+
+.hero-card:hover {
+    filter: brightness(1.15);
+}
+
+.hero-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* ── Rank Modal ───────────────────────────────────────────────── */
+
+#hero-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+#hero-modal-inner {
+    background: var(--modal-bg);
+    border: 1px solid var(--border);
+    /* Clipped top-right corner, sharp angular feel */
+    clip-path: polygon(0% 0%, calc(100% - 20px) 0%, 100% 20px, 100% 100%, 0% 100%);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 280px;
+}
+
+#modal-hero-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+#hero-modal-inner label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+#modal-rank-select {
+    background: #0e0f14;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Onest', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 10px 12px;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+#modal-rank-select option {
+    background: var(--modal-bg);
+}
+
+#modal-close {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'Onest', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+#modal-close:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+
+footer {
+    background: var(--nav-bg);
+    padding: 14px 24px;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.03em;
+}

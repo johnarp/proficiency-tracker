@@ -1,0 +1,46 @@
+[
+    {
+        "title": "Agent",
+        "rank": 0
+    },
+    {
+        "title": "Knight",
+        "rank": 1
+    },
+    {
+        "title": "Captain",
+        "rank": 2
+    },
+    {
+        "title": "Centurion",
+        "rank": 3
+    },
+    {
+        "title": "Lord",
+        "rank": 4
+    },
+    {
+        "title": "Count",
+        "rank": 5
+    },
+    {
+        "title": "Colonel",
+        "rank": 6
+    },
+    {
+        "title": "Warrior",
+        "rank": 7
+    },
+    {
+        "title": "Elite",
+        "rank": 8
+    },
+    {
+        "title": "Guardian",
+        "rank": 9
+    },
+    {
+        "title": "Champion",
+        "rank": 10
+    }
+]

@@ -26,7 +26,7 @@ Then open [http://localhost:3000](http://localhost:3000)
 
 ## To Do
 
-- [ ] Save/Import/Export with JSON & localStorage
+- [x] Save/Import/Export with JSON & localStorage
 - [x] Levels (alongside Ranks)
 - [x] Ranks shown visually on cards
 - [ ] Customization

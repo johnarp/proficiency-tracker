@@ -7,11 +7,13 @@ const DEFAULT_VIEW = 'views/heroes.html';
 const VIEW_INIT = {
     'views/heroes.html':    'initHeroesView',
     'views/customize.html': 'initCustomizeView',
+    'views/settings.html':  'initSettingsView',
 };
 
 const VIEW_SCRIPTS = {
     'views/heroes.html':    './app/heroes.js',
     'views/customize.html': './app/customize.js',
+    'views/settings.html':  './app/settings.js',
 };
 
 // Track already-loaded scripts to avoid duplicate injection
@@ -65,6 +67,9 @@ async function loadView(viewPath) {
 
 // Boot
 document.addEventListener('DOMContentLoaded', () => {
+    // Restore saved prefs and hero ranks before anything renders
+    if (typeof loadFromStorage === 'function') loadFromStorage();
+
     // Wire up nav links
     document.querySelectorAll('nav a[data-view]').forEach(a => {
         a.addEventListener('click', e => {

@@ -3,17 +3,18 @@
 /* ── Themes ───────────────────────────────────────────────────── */
 
 :root {
-    --bg:      #D2D3DD;
-    --card-bg: #B8BAC8;
-    --nav-bg:  #282A31;
-    --text:    #ffffff;
-    --primary: #FFFF00;
+    --bg:       #D2D3DD;
+    --card-bg:  #B8BAC8;
+    --nav-bg:   #282A31;
+    --text:     #ffffff;
+    --text-sub: rgba(0, 0, 0, 0.45); /* muted text on light backgrounds */
+    --primary:  #FFFF00;
 }
 
 [data-theme="dark"] {
-    --bg:      #282A31;
-    --card-bg: #1E2026;
-    --nav-bg:  #282A31;
+    --bg:       #1a1b20;
+    --card-bg:  #1E2026;
+    --text-sub: rgba(255, 255, 255, 0.45);
 }
 
 /* ── Base ─────────────────────────────────────────────────────── */
@@ -68,6 +69,7 @@ nav h1 {
 
 nav ul {
     display: flex;
+    flex: 1;
     list-style: none;
     height: 100%;
     align-items: stretch;
@@ -76,6 +78,11 @@ nav ul {
 
 nav ul li {
     display: flex;
+}
+
+/* Push settings icon to far right */
+nav ul li.nav-end {
+    margin-left: auto;
 }
 
 nav ul a {
@@ -139,7 +146,7 @@ nav ul a.active::after {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 16px;
+    padding: 0 20px;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -149,11 +156,6 @@ nav ul a.active::after {
     height: 100%;
     white-space: nowrap;
     flex-shrink: 0;
-}
-
-#hero-controls label + label {
-    border-left: 1px solid var(--text);
-    opacity: 0.6;
 }
 
 #hero-controls select {
@@ -255,25 +257,28 @@ nav ul a.active::after {
     opacity: 0.6;
 }
 
+/* Selects inside modal — transparent bg, white text */
 #modal-rank-select,
 #modal-level-select {
-    background: var(--bg);
+    background: transparent;
     border: none;
+    border-bottom: 1px solid var(--text);
     border-radius: 0;
-    color: var(--nav-bg);
+    color: var(--text);
     font-family: 'Onest', sans-serif;
     font-size: 0.88rem;
     font-weight: 500;
-    padding: 10px 12px;
+    padding: 8px 4px;
     cursor: pointer;
     outline: none;
     width: 100%;
+    opacity: 1;
 }
 
 #modal-rank-select option,
 #modal-level-select option {
-    background: var(--bg);
-    color: var(--nav-bg);
+    background: var(--nav-bg);
+    color: var(--text);
 }
 
 #modal-close {
@@ -299,95 +304,14 @@ nav ul a.active::after {
     border-color: var(--primary);
 }
 
-/* ── Customize View ───────────────────────────────────────────── */
+/* ── Settings / Customize shared layout ───────────────────────── */
 
-#customize-settings {
+.view-settings {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
     max-width: 480px;
 }
-
-.setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    background: var(--nav-bg);
-    padding: 14px 20px;
-}
-
-
-.setting-label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.setting-label span {
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text);
-}
-
-.setting-label small {
-    font-size: 0.7rem;
-    color: var(--text);
-    opacity: 0.5;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-/* Sharp toggle — same parallelogram direction as the control bar */
-.toggle {
-    position: relative;
-    width: 44px;
-    height: 22px;
-    flex-shrink: 0;
-}
-
-.toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-}
-
-.toggle-track {
-    position: absolute;
-    inset: 0;
-    background: var(--text);
-    opacity: 0.3;
-    cursor: pointer;
-    transition: background 0.15s, opacity 0.15s;
-    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-}
-
-.toggle input:checked + .toggle-track {
-    background: var(--primary);
-    opacity: 1;
-}
-
-.toggle-thumb {
-    position: absolute;
-    top: 3px;
-    left: 5px;
-    width: 14px;
-    height: 16px;
-    background: var(--text);
-    pointer-events: none;
-    transition: transform 0.15s;
-    clip-path: polygon(3px 0%, 100% 0%, calc(100% - 3px) 100%, 0% 100%);
-}
-
-.toggle input:checked ~ .toggle-thumb {
-    transform: translateX(18px);
-    background: var(--nav-bg);
-}
-
-/* ── Settings sections ────────────────────────────────────────── */
 
 .settings-section {
     display: flex;
@@ -400,23 +324,22 @@ nav ul a.active::after {
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--nav-bg);
-    opacity: 0.6;
+    color: var(--text-sub);
     padding: 0 4px 8px;
 }
 
-[data-theme="dark"] .settings-section-title {
-    color: var(--text);
+.setting-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
 }
 
-/* Theme picker button group */
-#theme-picker {
-    display: flex;
-    gap: 2px;
-}
+/* ── Buttons ──────────────────────────────────────────────────── */
 
-.theme-btn {
-    background: transparent;
+/* Shared flat button — used for theme switcher, toggles, and data actions */
+.btn {
+    background: var(--nav-bg);
     border: none;
     border-radius: 0;
     color: var(--text);
@@ -425,18 +348,23 @@ nav ul a.active::after {
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 6px 20px;
+    padding: 8px 24px;
     cursor: pointer;
-    opacity: 0.4;
+    opacity: 0.45;
     clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    transition: opacity 0.15s;
+    transition: opacity 0.15s, color 0.15s;
 }
 
-.theme-btn:hover { opacity: 0.75; }
+.btn:hover { opacity: 0.8; }
 
-.theme-btn.active {
+.btn.active {
     opacity: 1;
     color: var(--primary);
+}
+
+.btn.danger:hover {
+    opacity: 1;
+    color: #ff4444;
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
@@ -445,24 +373,19 @@ footer {
     background: var(--nav-bg);
     padding: 14px 24px;
     font-size: 0.68rem;
-    color: var(--text);
-    opacity: 0.4;
+    color: rgba(255, 255, 255, 0.35);
     text-align: center;
 }
 
 /* ── Mobile ───────────────────────────────────────────────────── */
 
 @media (max-width: 480px) {
-    main {
-        padding: 16px;
-    }
+    main { padding: 16px; }
 
     #heroes-grid {
         grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
         column-gap: 8px;
     }
 
-    #hero-modal-inner {
-        padding: 24px 20px;
-    }
+    #hero-modal-inner { padding: 24px 20px; }
 }

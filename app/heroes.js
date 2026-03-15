@@ -24,6 +24,9 @@ async function initHeroesView() {
     heroState.heroes = heroes;
     heroState.ranks  = [...ranks].sort((a, b) => a.rank - b.rank);
 
+    // Load saved progress if settings.js is available
+    if (typeof loadFromStorage === 'function') loadFromStorage();
+
     populateRankOptions();
     bindControls();
     bindModal();
@@ -185,6 +188,7 @@ function openModal(hero) {
 
 function saveHeroRank(heroName, rankIndex, level) {
     heroState.heroRanks[heroName] = { rank: rankIndex, level };
+    if (typeof saveToStorage === 'function') saveToStorage();
 }
 
 function closeModal() {

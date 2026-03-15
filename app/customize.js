@@ -1,14 +1,15 @@
 // customize.js
-// Logic for the customize view.
-// All HTML structure lives in views/customize.html.
 
 function initCustomizeView() {
     buildThemePicker();
 
-    const rankColorsToggle = document.getElementById('setting-rank-colors');
-    rankColorsToggle.checked = appSettings.rankColors;
-    rankColorsToggle.addEventListener('change', () => {
-        appSettings.rankColors = rankColorsToggle.checked;
+    const rankColorsBtn = document.getElementById('setting-rank-colors');
+    rankColorsBtn.classList.toggle('active', appSettings.rankColors);
+
+    rankColorsBtn.addEventListener('click', () => {
+        appSettings.rankColors = !appSettings.rankColors;
+        rankColorsBtn.classList.toggle('active', appSettings.rankColors);
+        if (typeof savePrefs === 'function') savePrefs();
     });
 }
 
@@ -18,13 +19,14 @@ function buildThemePicker() {
 
     appSettings.themes.forEach(t => {
         const btn = document.createElement('button');
-        btn.className = 'theme-btn' + (appSettings.theme === t.value ? ' active' : '');
+        btn.className = 'btn' + (appSettings.theme === t.value ? ' active' : '');
         btn.textContent = t.label;
         btn.addEventListener('click', () => {
             appSettings.theme = t.value;
             document.documentElement.setAttribute('data-theme', t.value);
-            picker.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            picker.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            if (typeof savePrefs === 'function') savePrefs();
         });
         picker.appendChild(btn);
     });

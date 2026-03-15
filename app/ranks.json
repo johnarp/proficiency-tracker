@@ -1,13 +1,79 @@
 [
-    { "title": "Agent",     "rank": 0,  "minLevel": 1,  "maxLevel": 4,  "color": "#7B5C3E" },
-    { "title": "Knight",    "rank": 1,  "minLevel": 5,  "maxLevel": 9,  "color": "#6B7280" },
-    { "title": "Captain",   "rank": 2,  "minLevel": 10, "maxLevel": 14, "color": "#3D7A4F" },
-    { "title": "Centurion", "rank": 3,  "minLevel": 15, "maxLevel": 19, "color": "#3B6FA0" },
-    { "title": "Lord",      "rank": 4,  "minLevel": 20, "maxLevel": 24, "color": "#C9A227" },
-    { "title": "Count",     "rank": 5,  "minLevel": 25, "maxLevel": 29, "color": "#7C3D9E" },
-    { "title": "Colonel",   "rank": 6,  "minLevel": 30, "maxLevel": 34, "color": "#B03030" },
-    { "title": "Warrior",   "rank": 7,  "minLevel": 35, "maxLevel": 39, "color": "#C46A1A" },
-    { "title": "Elite",     "rank": 8,  "minLevel": 40, "maxLevel": 44, "color": "#1A8A9E" },
-    { "title": "Guardian",  "rank": 9,  "minLevel": 45, "maxLevel": 49, "color": "#A0304A" },
-    { "title": "Champion",  "rank": 10, "minLevel": 50, "maxLevel": 50, "color": "#D4A017" }
+	{
+		"title": "Agent",
+		"rank": 0,
+		"minLevel": 1,
+		"maxLevel": 4,
+		"color": "linear-gradient(0deg, rgb(95, 84, 67) 0%, rgb(165, 144, 111) 100%)"
+	},
+	{
+		"title": "Knight",
+		"rank": 1,
+		"minLevel": 5,
+		"maxLevel": 9,
+		"color": "linear-gradient(0deg, rgb(116, 121, 145) 0%, rgb(199, 214, 224) 100%)"
+	},
+	{
+		"title": "Captain",
+		"rank": 2,
+		"minLevel": 10,
+		"maxLevel": 14,
+		"color": "linear-gradient(0deg, rgb(88, 125, 132) 0%, rgb(173, 221, 229) 100%)"
+	},
+	{
+		"title": "Centurion",
+		"rank": 3,
+		"minLevel": 15,
+		"maxLevel": 19,
+		"color": "linear-gradient(0deg, rgb(115, 122, 148) 0%, rgb(179, 218, 249) 100%)"
+	},
+	{
+		"title": "Lord",
+		"rank": 4,
+		"minLevel": 20,
+		"maxLevel": 24,
+		"color": "linear-gradient(0deg, rgb(91, 77, 64) 0%, rgb(246, 205, 127) 100%)"
+	},
+	{
+		"title": "Count",
+		"rank": 5,
+		"minLevel": 25,
+		"maxLevel": 29,
+		"color": "linear-gradient(0deg, rgb(92, 110, 119) 0%, rgb(199, 246, 249) 100%)"
+	},
+	{
+		"title": "Colonel",
+		"rank": 6,
+		"minLevel": 30,
+		"maxLevel": 34,
+		"color": "linear-gradient(0deg, rgb(63, 67, 93) 0%, rgb(183, 217, 241) 100%)"
+	},
+	{
+		"title": "Warrior",
+		"rank": 7,
+		"minLevel": 35,
+		"maxLevel": 39,
+		"color": "linear-gradient(0deg, rgb(77, 65, 116) 0%, rgb(216, 165, 248) 100%)"
+	},
+	{
+		"title": "Elite",
+		"rank": 8,
+		"minLevel": 40,
+		"maxLevel": 44,
+		"color": "linear-gradient(0deg, rgb(105, 83, 73) 0%, rgb(237, 147, 101) 100%)"
+	},
+	{
+		"title": "Guardian",
+		"rank": 9,
+		"minLevel": 45,
+		"maxLevel": 49,
+		"color": "linear-gradient(0deg, rgb(90, 52, 81) 0%, rgb(235, 149, 225) 100%)"
+	},
+	{
+		"title": "Champion",
+		"rank": 10,
+		"minLevel": 50,
+		"maxLevel": 50,
+		"color": "linear-gradient(0deg, rgb(178, 73, 87) 0%, rgb(253, 207, 82) 100%)"
+	}
 ]

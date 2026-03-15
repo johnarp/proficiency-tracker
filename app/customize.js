@@ -1,18 +1,15 @@
 // customize.js
+// Logic for the Customize view: theme picker and display toggles.
+// Called by views.js via initCustomizeView().
 
 function initCustomizeView() {
     buildThemePicker();
-
-    const rankColorsBtn = document.getElementById('setting-rank-colors');
-    rankColorsBtn.classList.toggle('active', appSettings.rankColors);
-
-    rankColorsBtn.addEventListener('click', () => {
-        appSettings.rankColors = !appSettings.rankColors;
-        rankColorsBtn.classList.toggle('active', appSettings.rankColors);
-        if (typeof savePrefs === 'function') savePrefs();
-    });
+    bindToggle('setting-rank-colors', 'rankColors');
+    bindToggle('setting-rank-icons',  'rankIcons');
+    bindToggle('setting-hero-names',  'showHeroNames');
 }
 
+/** Build theme picker buttons from appSettings.themes. */
 function buildThemePicker() {
     const picker = document.getElementById('theme-picker');
     picker.innerHTML = '';
@@ -29,6 +26,21 @@ function buildThemePicker() {
             if (typeof savePrefs === 'function') savePrefs();
         });
         picker.appendChild(btn);
+    });
+}
+
+/**
+ * Wire a toggle button to a boolean key on appSettings.
+ * Sets the initial active state and saves on toggle.
+ */
+function bindToggle(btnId, settingKey) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.classList.toggle('active', !!appSettings[settingKey]);
+    btn.addEventListener('click', () => {
+        appSettings[settingKey] = !appSettings[settingKey];
+        btn.classList.toggle('active', appSettings[settingKey]);
+        if (typeof savePrefs === 'function') savePrefs();
     });
 }
 

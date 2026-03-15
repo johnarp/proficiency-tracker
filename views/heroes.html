@@ -17,24 +17,32 @@
             <option value="rank-asc">Rank Low–High</option>
         </select>
     </label>
+    <label>
+        Size:
+        <select id="ctrl-size">
+            <option value="sm">S</option>
+            <option value="md">M</option>
+            <option value="lg">L</option>
+        </select>
+    </label>
 </div>
 
-<div id="heroes-grid"></div>
+<div id="heroes-grid" role="list" aria-label="Hero roster"></div>
 
 <!-- Rank modal -->
-<div id="hero-modal" style="display:none">
+<div id="hero-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-hero-name">
     <div id="hero-modal-inner">
-        <button id="modal-close">Close</button>
+        <button id="modal-close" aria-label="Close">Close</button>
         <h3 id="modal-hero-name"></h3>
         <label>
             Rank:
-            <select id="modal-rank-select">
+            <select id="modal-rank-select" aria-label="Rank">
                 <!-- Populated from ranks.json by heroes.js -->
             </select>
         </label>
         <label>
             Level:
-            <select id="modal-level-select">
+            <select id="modal-level-select" aria-label="Level">
                 <!-- Populated when rank is selected -->
             </select>
         </label>

@@ -7,14 +7,13 @@
     --card-bg:  #B8BAC8;
     --nav-bg:   #282A31;
     --text:     #ffffff;
-    --text-sub: rgba(0, 0, 0, 0.45); /* muted text on light backgrounds */
+    --text-sub: rgba(255, 255, 255, 0.45);
     --primary:  #FFFF00;
 }
 
 [data-theme="dark"] {
     --bg:       #1a1b20;
     --card-bg:  #1E2026;
-    --text-sub: rgba(255, 255, 255, 0.45);
 }
 
 /* ── Base ─────────────────────────────────────────────────────── */
@@ -24,6 +23,20 @@
     margin: 0;
     padding: 0;
 }
+
+html {
+    background: var(--bg);
+    scrollbar-gutter: stable;
+}
+
+html::-webkit-scrollbar       { width: 5px; }
+html::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); }
+html::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.35); }
+html { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.2) transparent; }
+
+[data-theme="dark"] { scrollbar-color: rgba(255,255,255,0.2) transparent; }
+[data-theme="dark"] html::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
 
 body {
     font-family: 'Onest', sans-serif;
@@ -43,6 +56,11 @@ main {
 
 header {
     background: var(--nav-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin-top: -1px;
+    padding-top: 1px;
 }
 
 nav {
@@ -76,14 +94,8 @@ nav ul {
     flex-shrink: 0;
 }
 
-nav ul li {
-    display: flex;
-}
-
-/* Push settings icon to far right */
-nav ul li.nav-end {
-    margin-left: auto;
-}
+nav ul li { display: flex; }
+nav ul li.nav-end { margin-left: auto; }
 
 nav ul a {
     display: flex;
@@ -105,24 +117,21 @@ nav ul a {
 nav ul a::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     height: 2px;
     background: var(--primary);
     transform: scaleX(0);
     transition: transform 0.15s;
 }
 
-nav ul a:hover { opacity: 1; }
+nav ul a:hover  { opacity: 1; }
+nav ul a.active { opacity: 1; color: var(--primary); }
+nav ul a.active::after { transform: scaleX(1); }
 
-nav ul a.active {
+nav ul a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: -3px;
     opacity: 1;
-    color: var(--primary);
-}
-
-nav ul a.active::after {
-    transform: scaleX(1);
 }
 
 /* ── Control Bar ──────────────────────────────────────────────── */
@@ -180,29 +189,115 @@ nav ul a.active::after {
 
 #heroes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--hero-card-min-size, 120px), 1fr));
     column-gap: 12px;
     row-gap: 8px;
 }
 
-.hero-card {
+/*
+ * .hero-card-outer — the actual grid item.
+ * position: relative so the icon can be absolutely positioned inside it.
+ * NO clip-path here — clip-path clips all children, which would hide the icon.
+ */
+.hero-card-outer {
+    position: relative;
+    margin-top: -10px;
     cursor: pointer;
+}
+
+/*
+ * .hero-card-wrap — handles the yellow hover border.
+ * clip-path clips it to the parallelogram shape.
+ * On hover its background turns primary; the 2px margin on .hero-card
+ * reveals it as a shape-matching border.
+ */
+.hero-card-wrap {
+    clip-path: polygon(0% 16px, 100% 0%, 100% calc(100% - 16px), 0% 100%);
+    background: transparent;
+    transition: background 0.12s;
+}
+
+.hero-card-outer:hover .hero-card-wrap,
+.hero-card-outer:focus-visible .hero-card-wrap {
+    background: var(--primary);
+    outline: none;
+}
+
+.hero-card-outer:focus-visible {
+    outline: none;
+}
+
+.hero-card {
+    position: relative;
     background: var(--card-bg);
     aspect-ratio: 1 / 2;
     clip-path: polygon(0% 16px, 100% 0%, 100% calc(100% - 16px), 0% 100%);
     overflow: hidden;
-    transition: filter 0.15s;
-    margin-top: -10px;
+    margin: 2px;
+    transition: filter 0.12s;
 }
 
-.hero-card:hover { filter: brightness(1.1); }
+.hero-card-outer:hover .hero-card,
+.hero-card-outer:focus-visible .hero-card {
+    filter: brightness(1.06);
+}
 
-.hero-card img {
+.hero-card-portrait {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: cover;
     object-position: top;
+}
+
+/*
+ * Hero name — gradient fade at card bottom, above the slope.
+ * Anchored to bottom of .hero-card (which has overflow:hidden so it clips correctly).
+ */
+.hero-card-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.85));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    pointer-events: none;
+}
+
+.hero-card-name span {
+    display: block;
+    max-width: 100%;
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/*
+ * Rank icon — child of .hero-card-outer, NOT inside any clip-path element.
+ * bottom/left are relative to .hero-card-outer's box, which aligns with the
+ * bottom-left corner of the card.
+ */
+.hero-card-rank-icon {
+    position: absolute;
+    bottom: -15px;
+    left: -15px;
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,1));
 }
 
 /* ── Modal ────────────────────────────────────────────────────── */
@@ -257,12 +352,11 @@ nav ul a.active::after {
     opacity: 0.6;
 }
 
-/* Selects inside modal — transparent bg, white text */
 #modal-rank-select,
 #modal-level-select {
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.4);
     border-radius: 0;
     color: var(--text);
     font-family: 'Onest', sans-serif;
@@ -275,6 +369,11 @@ nav ul a.active::after {
     opacity: 1;
 }
 
+#modal-rank-select:focus-visible,
+#modal-level-select:focus-visible {
+    border-bottom: 2px solid var(--primary);
+}
+
 #modal-rank-select option,
 #modal-level-select option {
     background: var(--nav-bg);
@@ -284,7 +383,7 @@ nav ul a.active::after {
 #modal-close {
     align-self: flex-start;
     background: transparent;
-    border: 1px solid var(--text);
+    border: 1px solid rgba(255,255,255,0.4);
     border-radius: 0;
     color: var(--text);
     font-family: 'Onest', sans-serif;
@@ -294,14 +393,16 @@ nav ul a.active::after {
     text-transform: uppercase;
     padding: 6px 16px;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 0.15s, color 0.15s, border-color 0.15s;
 }
 
-#modal-close:hover {
+#modal-close:hover,
+#modal-close:focus-visible {
     opacity: 1;
     color: var(--primary);
     border-color: var(--primary);
+    outline: none;
 }
 
 /* ── Settings / Customize shared layout ───────────────────────── */
@@ -309,62 +410,127 @@ nav ul a.active::after {
 .view-settings {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 32px;
     max-width: 480px;
+    background: var(--nav-bg);
+    padding: 28px 32px;
 }
 
 .settings-section {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .settings-section-title {
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-sub);
-    padding: 0 4px 8px;
+    color: rgba(255, 255, 255, 0.45);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 6px;
 }
 
 .setting-row {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 0;
+    padding: 10px 0;
+    flex-wrap: wrap;
 }
 
 /* ── Buttons ──────────────────────────────────────────────────── */
 
-/* Shared flat button — used for theme switcher, toggles, and data actions */
 .btn {
-    background: var(--nav-bg);
-    border: none;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
     border-radius: 0;
-    color: var(--text);
+    color: #fff;
     font-family: 'Onest', sans-serif;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 8px 24px;
+    padding: 9px 20px;
     cursor: pointer;
-    opacity: 0.45;
     clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    transition: opacity 0.15s, color 0.15s;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.btn:hover { opacity: 0.8; }
+.btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.28);
+}
+
+.btn:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
 
 .btn.active {
-    opacity: 1;
+    background: rgba(255,255,0,0.12);
+    border-color: rgba(255,255,0,0.45);
     color: var(--primary);
 }
 
+.btn.active:hover { background: rgba(255,255,0,0.18); }
+
+.btn.danger { border-color: rgba(255,60,60,0.2); }
 .btn.danger:hover {
+    background: rgba(255,60,60,0.12);
+    border-color: rgba(255,60,60,0.5);
+    color: #ff5555;
+}
+
+/* ── Meta / About section ─────────────────────────────────────── */
+
+.meta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 0;
+}
+
+.meta-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    min-width: 80px;
+}
+
+.meta-value {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.meta-links {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
+.meta-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px 6px 0;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+
+.meta-link:hover,
+.meta-link:focus-visible {
     opacity: 1;
-    color: #ff4444;
+    outline: none;
+    text-decoration: underline;
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
@@ -381,11 +547,9 @@ footer {
 
 @media (max-width: 480px) {
     main { padding: 16px; }
-
-    #heroes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-        column-gap: 8px;
-    }
-
+    #hero-controls { padding: 0 20px; }
+    #hero-controls label { padding: 0 12px; }
+    #heroes-grid { column-gap: 8px; }
     #hero-modal-inner { padding: 24px 20px; }
+    .view-settings { padding: 20px; }
 }

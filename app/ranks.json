@@ -4,76 +4,87 @@
 		"rank": 0,
 		"minLevel": 1,
 		"maxLevel": 4,
-		"color": "linear-gradient(0deg, rgb(95, 84, 67) 0%, rgb(165, 144, 111) 100%)"
+		"color": "linear-gradient(0deg, rgb(95, 84, 67) 0%, rgb(165, 144, 111) 100%)",
+		"icon": "./assets/icons/Agent_Badge_2_Square.webp"
 	},
 	{
 		"title": "Knight",
 		"rank": 1,
 		"minLevel": 5,
 		"maxLevel": 9,
-		"color": "linear-gradient(0deg, rgb(116, 121, 145) 0%, rgb(199, 214, 224) 100%)"
+		"color": "linear-gradient(0deg, rgb(116, 121, 145) 0%, rgb(199, 214, 224) 100%)",
+		"icon": "./assets/icons/Knight_Badge_2_Square.webp"
 	},
 	{
 		"title": "Captain",
 		"rank": 2,
 		"minLevel": 10,
 		"maxLevel": 14,
-		"color": "linear-gradient(0deg, rgb(88, 125, 132) 0%, rgb(173, 221, 229) 100%)"
+		"color": "linear-gradient(0deg, rgb(88, 125, 132) 0%, rgb(173, 221, 229) 100%)",
+		"icon": "./assets/icons/Captain_Badge_2_Square.webp"
 	},
 	{
 		"title": "Centurion",
 		"rank": 3,
 		"minLevel": 15,
 		"maxLevel": 19,
-		"color": "linear-gradient(0deg, rgb(115, 122, 148) 0%, rgb(179, 218, 249) 100%)"
+		"color": "linear-gradient(0deg, rgb(115, 122, 148) 0%, rgb(179, 218, 249) 100%)",
+		"icon": "./assets/icons/Centurion_Badge_2_Square.webp"
 	},
 	{
 		"title": "Lord",
 		"rank": 4,
 		"minLevel": 20,
 		"maxLevel": 24,
-		"color": "linear-gradient(0deg, rgb(91, 77, 64) 0%, rgb(246, 205, 127) 100%)"
+		"color": "linear-gradient(0deg, rgb(91, 77, 64) 0%, rgb(246, 205, 127) 100%)",
+		"icon": "./assets/icons/Lord_Badge_2_Square.webp"
 	},
 	{
 		"title": "Count",
 		"rank": 5,
 		"minLevel": 25,
 		"maxLevel": 29,
-		"color": "linear-gradient(0deg, rgb(92, 110, 119) 0%, rgb(199, 246, 249) 100%)"
+		"color": "linear-gradient(0deg, rgb(92, 110, 119) 0%, rgb(199, 246, 249) 100%)",
+		"icon": "./assets/icons/Count_Badge_Square.webp"
 	},
 	{
 		"title": "Colonel",
 		"rank": 6,
 		"minLevel": 30,
 		"maxLevel": 34,
-		"color": "linear-gradient(0deg, rgb(63, 67, 93) 0%, rgb(183, 217, 241) 100%)"
+		"color": "linear-gradient(0deg, rgb(63, 67, 93) 0%, rgb(183, 217, 241) 100%)",
+		"icon": "./assets/icons/Colonel_Badge_Square.webp"
 	},
 	{
 		"title": "Warrior",
 		"rank": 7,
 		"minLevel": 35,
 		"maxLevel": 39,
-		"color": "linear-gradient(0deg, rgb(77, 65, 116) 0%, rgb(216, 165, 248) 100%)"
+		"color": "linear-gradient(0deg, rgb(77, 65, 116) 0%, rgb(216, 165, 248) 100%)",
+		"icon": "./assets/icons/Warrior_Badge_Square.webp"
 	},
 	{
 		"title": "Elite",
 		"rank": 8,
 		"minLevel": 40,
 		"maxLevel": 44,
-		"color": "linear-gradient(0deg, rgb(105, 83, 73) 0%, rgb(237, 147, 101) 100%)"
+		"color": "linear-gradient(0deg, rgb(105, 83, 73) 0%, rgb(237, 147, 101) 100%)",
+		"icon": "./assets/icons/Elite_Badge_Square.webp"
 	},
 	{
 		"title": "Guardian",
 		"rank": 9,
 		"minLevel": 45,
 		"maxLevel": 49,
-		"color": "linear-gradient(0deg, rgb(90, 52, 81) 0%, rgb(235, 149, 225) 100%)"
+		"color": "linear-gradient(0deg, rgb(90, 52, 81) 0%, rgb(235, 149, 225) 100%)",
+		"icon": "./assets/icons/Guardian_Badge_Square.webp"
 	},
 	{
 		"title": "Champion",
 		"rank": 10,
 		"minLevel": 50,
 		"maxLevel": 50,
-		"color": "linear-gradient(0deg, rgb(178, 73, 87) 0%, rgb(253, 207, 82) 100%)"
+		"color": "linear-gradient(0deg, rgb(178, 73, 87) 0%, rgb(253, 207, 82) 100%)",
+		"icon": "./assets/icons/Champion_Badge_Square.webp"
 	}
 ]

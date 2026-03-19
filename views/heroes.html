@@ -29,22 +29,38 @@
 
 <div id="heroes-grid" role="list" aria-label="Hero roster"></div>
 
-<!-- Rank modal -->
+<!-- Proficiency modal — scoped to the heroes view -->
 <div id="hero-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-hero-name">
+    <div id="hero-modal-overlay"></div>
     <div id="hero-modal-inner">
+
+        <!-- Corner accent marks -->
+        <span class="corner corner-tl" aria-hidden="true"></span>
+        <span class="corner corner-br" aria-hidden="true"></span>
+
+        <div id="hero-modal-header">
+            <div id="hero-modal-header-text">
+                <span id="modal-hero-role" class="modal-tag"></span>
+                <h3 id="modal-hero-name"></h3>
+            </div>
+        </div>
+
+        <div id="hero-modal-selects">
+            <label>
+                <span>Rank</span>
+                <select id="modal-rank-select" aria-label="Rank">
+                    <!-- Populated from ranks.json by heroes.js -->
+                </select>
+            </label>
+            <label>
+                <span>Level</span>
+                <select id="modal-level-select" aria-label="Level">
+                    <!-- Populated when rank is selected -->
+                </select>
+            </label>
+        </div>
+
         <button id="modal-close" aria-label="Close">Close</button>
-        <h3 id="modal-hero-name"></h3>
-        <label>
-            Rank:
-            <select id="modal-rank-select" aria-label="Rank">
-                <!-- Populated from ranks.json by heroes.js -->
-            </select>
-        </label>
-        <label>
-            Level:
-            <select id="modal-level-select" aria-label="Level">
-                <!-- Populated when rank is selected -->
-            </select>
-        </label>
+
     </div>
 </div>

@@ -7,11 +7,15 @@ const appSettings = {
     rankColors:    false,
     rankIcons:     false,
     showHeroNames: false,
+    showHeroLevel: false,
     cardSize:      'md',
 
+    // Each theme: { label, value, type }
+    // type: 'color' (default) | 'image'
+    // Image themes can set a CSS background-image on <html> via data-theme.
     themes: [
-        { label: 'Default', value: '' },
-        { label: 'Dark',    value: 'dark' },
+        { label: 'Default', value: '',     type: 'color' },
+        { label: 'Dark',    value: 'dark', type: 'color' },
     ],
 };
 

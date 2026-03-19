@@ -1,6 +1,19 @@
 {
-    "version": "0.3.0",
+    "version": "1.0.0",
     "repo": "https://github.com/johnarp/proficiency-tracker",
     "issues": "https://github.com/johnarp/proficiency-tracker/issues",
-    "changelog": "https://github.com/johnarp/proficiency-tracker/blob/main/CHANGELOG.md"
+    "changelog": "https://github.com/johnarp/proficiency-tracker/blob/main/CHANGELOG.md",
+
+    "announcement": {
+        "id": "1.0.0",
+        "tag": "New Update",
+        "title": "v1.0.0",
+        "body": [
+            "New Gallery Card themes.",
+            "Show proficiency level on card.",
+            "View profile and credits.",
+            "and more..."
+        ],
+        "image": "assets/backgrounds/img_gallery_card_horizontal_01.png"
+    }
 }

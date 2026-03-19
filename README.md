@@ -24,14 +24,6 @@ python -m http.server 3000
 
 Then open [http://localhost:3000](http://localhost:3000)
 
-## To Do
-
-- [x] Save/Import/Export with JSON & localStorage
-- [x] Levels (alongside Ranks)
-- [x] Ranks shown visually on cards
-- [ ] Customization
-- [ ] Improved visuals and UI
-
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md) or [Releases](https://github.com/johnarp/proficiency-tracker/releases).

@@ -33,7 +33,7 @@ function populateRankOptions() {
     select.innerHTML = '';
     heroState.ranks.forEach(r => {
         const opt = document.createElement('option');
-        opt.value = r.rank;
+        opt.value       = r.rank;
         opt.textContent = r.title;
         select.appendChild(opt);
     });
@@ -45,7 +45,7 @@ function populateLevelOptions(rankIndex) {
     select.innerHTML = '';
     for (let lvl = rankData.minLevel; lvl <= rankData.maxLevel; lvl++) {
         const opt = document.createElement('option');
-        opt.value = lvl;
+        opt.value       = lvl;
         opt.textContent = `Level ${lvl}`;
         select.appendChild(opt);
     }
@@ -79,6 +79,8 @@ function bindControls() {
 }
 
 function bindModal() {
+    // The proficiency modal lives inside heroes.html — it is a separate,
+    // in-view modal, not the global #app-modal used for profile/credits.
     const modal = document.getElementById('hero-modal');
     document.getElementById('modal-close').addEventListener('click', closeModal);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
@@ -94,8 +96,10 @@ function renderGrid() {
     grid.innerHTML = '';
 
     getVisibleHeroes().forEach(hero => {
-        const savedRank = heroState.heroRanks[hero.name]?.rank ?? 0;
-        const rankData  = heroState.ranks.find(r => r.rank === savedRank);
+        const saved      = heroState.heroRanks[hero.name];
+        const savedRank  = saved?.rank  ?? 0;
+        const savedLevel = saved?.level ?? 1;  // heroes start at level 1
+        const rankData   = heroState.ranks.find(r => r.rank === savedRank);
 
         /*
          * DOM structure:
@@ -103,13 +107,18 @@ function renderGrid() {
          * .hero-card-outer      — grid item, position:relative, NO clip-path
          *   .hero-card-wrap     — clip-path + hover yellow border
          *     .hero-card        — clip-path + image + name overlay
-         *   .hero-card-rank-icon — absolutely positioned on outer, so it is
-         *                          never clipped by clip-path on wrap or card
+         *   .hero-card-rank-icon — absolutely positioned on outer (bottom-left),
+         *                          never clipped by clip-path on wrap/card
+         *   .hero-card-level    — absolutely positioned on outer (bottom-right),
+         *                          shows current level when showHeroLevel is on
          */
         const outer = document.createElement('div');
         outer.className = 'hero-card-outer';
         outer.setAttribute('tabindex', '0');
-        outer.setAttribute('aria-label', `${hero.name}, ${getRoles(hero).join(' / ')}, ${rankData?.title ?? 'Agent'}`);
+        outer.setAttribute('aria-label',
+            `${hero.name}, ${getRoles(hero).join(' / ')}, ${rankData?.title ?? 'Agent'}` +
+            (savedLevel ? `, Level ${savedLevel}` : '')
+        );
 
         const wrap = document.createElement('div');
         wrap.className = 'hero-card-wrap';
@@ -123,9 +132,9 @@ function renderGrid() {
 
         const img = document.createElement('img');
         img.className = 'hero-card-portrait';
-        img.src     = hero.image;
-        img.alt     = hero.name;
-        img.loading = 'lazy';
+        img.src       = hero.image;
+        img.alt       = hero.name;
+        img.loading   = 'lazy';
         card.appendChild(img);
 
         if (appSettings.showHeroNames) {
@@ -140,13 +149,22 @@ function renderGrid() {
         wrap.appendChild(card);
         outer.appendChild(wrap);
 
-        // Icon is a child of outer — outside any clip-path, never clipped
+        // Rank icon — bottom-left, outside clip-path.
         if (appSettings.rankIcons && rankData?.icon) {
             const icon = document.createElement('img');
             icon.className = 'hero-card-rank-icon';
             icon.src = rankData.icon;
             icon.alt = rankData.title;
             outer.appendChild(icon);
+        }
+
+        // Level badge — bottom-right, outside clip-path.
+        if (appSettings.showHeroLevel) {
+            const badge = document.createElement('div');
+            badge.className = 'hero-card-level';
+            badge.textContent = savedLevel;
+            badge.setAttribute('aria-hidden', 'true');
+            outer.appendChild(badge);
         }
 
         const openFn = () => openModal(hero);
@@ -174,9 +192,13 @@ function getVisibleHeroes() {
             return heroState.sort.dir === 'asc' ? cmp : -cmp;
         }
         if (heroState.sort.by === 'rank') {
-            const la = heroState.heroRanks[a.name]?.level ?? 1;
-            const lb = heroState.heroRanks[b.name]?.level ?? 1;
-            return heroState.sort.dir === 'asc' ? la - lb : lb - la;
+            const ra = heroState.heroRanks[a.name]?.rank  ?? 0;
+            const rb = heroState.heroRanks[b.name]?.rank  ?? 0;
+            const la = heroState.heroRanks[a.name]?.level ?? 0;
+            const lb = heroState.heroRanks[b.name]?.level ?? 0;
+            // Sort by rank first, then level within the same rank.
+            const cmp = ra !== rb ? ra - rb : la - lb;
+            return heroState.sort.dir === 'asc' ? cmp : -cmp;
         }
         return 0;
     });
@@ -192,10 +214,21 @@ function openModal(hero) {
     const levelSelect = document.getElementById('modal-level-select');
     const saved       = heroState.heroRanks[hero.name];
 
-    document.getElementById('modal-hero-name').textContent = hero.name;
-
     const savedRank  = saved?.rank  ?? 0;
     const savedLevel = saved?.level ?? 1;
+
+    document.getElementById('modal-hero-name').textContent = hero.name;
+
+    // Populate role tag(s).
+    const roleEl = document.getElementById('modal-hero-role');
+    if (roleEl) roleEl.textContent = getRoles(hero).join(' / ');
+
+    // Populate rank image if the modal has a portrait slot.
+    const portraitEl = document.getElementById('modal-hero-portrait');
+    if (portraitEl) {
+        portraitEl.src = hero.image;
+        portraitEl.alt = hero.name;
+    }
 
     rankSelect.value = savedRank;
     populateLevelOptions(savedRank);

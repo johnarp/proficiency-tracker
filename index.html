@@ -26,12 +26,38 @@
             </ul>
         </nav>
     </header>
+
     <main>
         <div id="content"></div>
     </main>
+
+    <!--
+        Global modal — used for announcements, profile, credits.
+        Populated and shown by showModal() in views.js.
+    -->
+    <div id="app-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="app-modal-title">
+        <div id="app-modal-overlay"></div>
+        <div id="app-modal-panel">
+            <div id="app-modal-header">
+                <div id="app-modal-header-text">
+                    <span id="app-modal-tag"></span>
+                    <h2 id="app-modal-title"></h2>
+                </div>
+            </div>
+            <div id="app-modal-image-wrap" style="display:none">
+                <img id="app-modal-image" alt="">
+            </div>
+            <div id="app-modal-body"></div>
+            <div id="app-modal-footer">
+                <button id="app-modal-close" class="btn">Close</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <span>Proficiency Tracker is not affiliated with NetEase Games or Marvel. Trademarks belong to their respective owners.</span>
     </footer>
+
     <script src="./app/state.js"></script>
     <script src="./app/settings.js"></script>
     <script src="./app/views.js"></script>

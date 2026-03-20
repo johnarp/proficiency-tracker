@@ -18,6 +18,17 @@ async function initHeroesView() {
     if (typeof loadFromStorage === 'function') loadFromStorage();
     if (typeof applyCardSize   === 'function') applyCardSize();
 
+    // Every hero starts at Agent / Level 1. Initialise any hero that has
+    // never been touched so they are always reflected in storage and the profile.
+    let heroesInitialised = false;
+    heroes.forEach(hero => {
+        if (!heroState.heroRanks[hero.name]) {
+            heroState.heroRanks[hero.name] = { rank: 0, level: 1 };
+            heroesInitialised = true;
+        }
+    });
+    if (heroesInitialised && typeof saveToStorage === 'function') saveToStorage();
+
     populateRankOptions();
     bindControls();
     bindModal();

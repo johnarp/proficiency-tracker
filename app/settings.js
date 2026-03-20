@@ -105,6 +105,16 @@ async function loadMeta() {
 
 /** Open the Profile modal — shows rank distribution and saved preferences. */
 async function openProfileModal() {
+    // Use already-loaded heroes, or fetch them if the Heroes view hasn't been visited.
+    let heroes = heroState.heroes;
+    if (!heroes.length) {
+        try {
+            heroes = await fetch('./app/heroes.json').then(r => r.json());
+        } catch {
+            heroes = [];
+        }
+    }
+
     // Use already-loaded ranks, or fetch them if the Heroes view hasn't been visited.
     let ranks = heroState.ranks;
     if (!ranks.length) {
@@ -116,13 +126,13 @@ async function openProfileModal() {
         }
     }
 
-    // Count heroes per rank.
+    // Every hero defaults to Agent (rank 0) / Level 1 if never explicitly set.
     const counts = Object.fromEntries(ranks.map(r => [r.rank, 0]));
-    Object.values(heroState.heroRanks).forEach(({ rank }) => {
+    heroes.forEach(hero => {
+        const rank = heroState.heroRanks[hero.name]?.rank ?? 0;
         if (counts[rank] !== undefined) counts[rank]++;
     });
-
-    const totalTracked = Object.values(counts).reduce((sum, n) => sum + n, 0);
+    const totalHeroes = heroes.length || 1;
 
     const wrap = document.createElement('div');
     wrap.className = 'profile-content';
@@ -133,16 +143,12 @@ async function openProfileModal() {
     distLabel.textContent = 'Rank Distribution';
     wrap.appendChild(distLabel);
 
-    if (totalTracked === 0) {
-        const empty = document.createElement('p');
-        empty.className = 'modal-empty';
-        empty.textContent = 'No heroes tracked yet. Head to the Heroes tab to get started.';
-        wrap.appendChild(empty);
-    } else {
-        // Render highest-first.
-        [...ranks].reverse().forEach(r => {
-            const count = counts[r.rank] || 0;
-            if (count === 0) return;
+    if (totalHeroes === 0) return;
+
+    // Render highest-first.
+    [...ranks].reverse().forEach(r => {
+        const count = counts[r.rank] || 0;
+        if (count === 0) return;
 
             const row = document.createElement('div');
             row.className = 'profile-rank-row';
@@ -178,10 +184,9 @@ async function openProfileModal() {
 
             // Defer width so CSS transition plays.
             requestAnimationFrame(() => {
-                bar.style.width = `${(count / totalTracked) * 100}%`;
+                bar.style.width = `${(count / totalHeroes) * 100}%`;
             });
         });
-    }
 
     // ── Preferences Summary ────────────────────────────────────────────────────
     const prefsLabel = document.createElement('p');
@@ -335,6 +340,7 @@ function clearData() {
     appSettings.cardSize      = 'md';
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(PREFS_KEY);
+    localStorage.removeItem('announcement_seen');
     document.documentElement.setAttribute('data-theme', '');
     applyCardSize();
 }

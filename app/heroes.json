@@ -225,6 +225,11 @@
         "image": "./assets/heroes/img_venom.png"
     },
     {
+        "name": "White Fox",
+        "role": "Strategist",
+        "image": "./assets/heroes/img_white-fox.png"
+    },
+    {
         "name": "Winter Soldier",
         "role": "Duelist",
         "image": "./assets/heroes/img_winter-soldier.png"

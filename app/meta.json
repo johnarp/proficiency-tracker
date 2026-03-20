@@ -1,19 +1,16 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "repo": "https://github.com/johnarp/proficiency-tracker",
     "issues": "https://github.com/johnarp/proficiency-tracker/issues",
     "changelog": "https://github.com/johnarp/proficiency-tracker/blob/main/CHANGELOG.md",
 
     "announcement": {
-        "id": "1.0.0",
-        "tag": "New Update",
-        "title": "v1.0.0",
+        "id": "1.0.1",
+        "tag": "New Hero",
+        "title": "White Fox",
         "body": [
-            "New Gallery Card themes.",
-            "Show proficiency level on card.",
-            "View profile and credits.",
-            "and more..."
+            "New Hero available now."
         ],
-        "image": "assets/backgrounds/img_gallery_card_horizontal_01.png"
+        "image": "assets/heroes/img_white-fox.png"
     }
 }
